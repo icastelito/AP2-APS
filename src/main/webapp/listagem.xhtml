@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<h:head><title>Lista de Jogos</title></h:head>
+	<h:body>
+		<h:form id="formListagem">
+			<p:link outcome="index" value="Voltar"/>
+			<p:dataTable var="jogo" value="#{jogoBean.jogos}" editable="true" 
+                     paginator="true" rows="10" id="dataTable" 
+                     style="width: 100%;">
+            
+            <p:column headerText="ID">
+                <h:outputText value="#{jogo.id}" />
+            </p:column>
+            
+            <p:column headerText="Data Cadastro">
+                <h:outputText value="#{jogo.dataCadastro}" />
+            </p:column>
+
+            <p:column headerText="Num Sorteado">
+                <h:outputText value="#{jogo.numeroSorteado}" />
+            </p:column>
+
+            <p:column headerText="v1">
+                <h:outputText value="#{jogo.v1}" />
+            </p:column>
+
+            <p:column headerText="v2">
+                <h:outputText value="#{jogo.v2}" />
+            </p:column>
+
+            <p:column headerText="v3">
+                <h:outputText value="#{jogo.v3}" />
+            </p:column>
+
+            <p:column headerText="v4">
+                <h:outputText value="#{jogo.v4}" />
+            </p:column>
+
+            <p:column headerText="v5">
+                <h:outputText value="#{jogo.v5}" />
+            </p:column>
+
+            <p:column headerText="Ações">
+                <p:commandButton value="Editar" action="#{jogoBean.editar(jogo)}" update=":formListagem:dataTable :formEdicao:panelEdicao" />
+                <p:commandButton value="Excluir" action="#{jogoBean.excluir(jogo)}" update=":formListagem:dataTable" />
+                <p:commandButton value="Maior" onclick="PF('dlgMaior').show();">
+                    <f:setPropertyActionListener value="#{jogo}" target="#{jogoBean.jogoSelecionado}" />
+                </p:commandButton>
+                <p:commandButton value="Result" onclick="PF('dlgResult').show();">
+                    <f:setPropertyActionListener value="#{jogo}" target="#{jogoBean.jogoSelecionado}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+
+        <p:dialog header="Maior Valor" widgetVar="dlgMaior" modal="true">
+            <h:outputText value="#{jogoBean.maiorValor(jogoBean.jogoSelecionado)}" />
+        </p:dialog>
+
+        <p:dialog header="Número Sorteado" widgetVar="dlgResult" modal="true">
+            <h:outputText value="#{jogoBean.verificarNumeroSorteado(jogoBean.jogoSelecionado)}" />
+        </p:dialog>
+		</h:form>
+
+        <h:form id="formEdicao">
+            <p:panel id="panelEdicao" header="Editar Jogo" rendered="#{jogoBean.jogo != null}">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="ID" />
+                    <h:outputText value="#{jogoBean.jogo.id}" />
+                    
+                    <h:outputLabel value="Data Cadastro" />
+                    <h:outputText value="#{jogoBean.jogo.dataCadastro}" />
+                    
+                    <h:outputLabel value="Num Sorteado" />
+                    <h:inputText value="#{jogoBean.jogo.numeroSorteado}" />
+
+                    <h:outputLabel value="v1" />
+                    <h:inputText value="#{jogoBean.jogo.v1}" />
+
+                    <h:outputLabel value="v2" />
+                    <h:inputText value="#{jogoBean.jogo.v2}" />
+
+                    <h:outputLabel value="v3" />
+                    <h:inputText value="#{jogoBean.jogo.v3}" />
+
+                    <h:outputLabel value="v4" />
+                    <h:inputText value="#{jogoBean.jogo.v4}" />
+
+                    <h:outputLabel value="v5" />
+                    <h:inputText value="#{jogoBean.jogo.v5}" />
+                </h:panelGrid>
+                <p:commandButton value="Salvar" action="#{jogoBean.atualizar}" update=":formListagem:dataTable :formEdicao:panelEdicao" />
+            </p:panel>
+        </h:form>
+	</h:body>
+</html>
